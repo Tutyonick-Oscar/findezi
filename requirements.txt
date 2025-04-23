@@ -16,6 +16,7 @@ djangorestframework_simplejwt==5.5.0
 drf-spectacular==0.28.0
 executing==2.2.0
 filelock==3.18.0
+gunicorn==23.0.0
 identify==2.6.10
 inflection==0.5.1
 ipython==9.1.0
@@ -25,6 +26,7 @@ jsonschema==4.23.0
 jsonschema-specifications==2024.10.1
 matplotlib-inline==0.1.7
 nodeenv==1.9.1
+packaging==25.0
 parso==0.8.4
 pexpect==4.9.0
 pillow==11.2.1
@@ -35,7 +37,6 @@ psycopg2==2.9.10
 ptyprocess==0.7.0
 pure_eval==0.2.3
 Pygments==2.19.1
-pygraphviz==1.14
 PyJWT==2.9.0
 pytz==2025.2
 PyYAML==6.0.2
