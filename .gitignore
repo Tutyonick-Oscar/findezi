@@ -1,0 +1,11 @@
+./findezi
+./vscode
+cache/
+findezi/settings/local_settings.py
+apps/**/__pycache__/
+findezi/__pycache__/
+/apps/**/**/__pycache__/
+apps/**/**/**/__pycache__/
+apps/**/test.py
+findezi/**/__pycache__/
+__pycache__/
