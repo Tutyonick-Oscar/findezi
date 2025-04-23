@@ -10,6 +10,7 @@ class Document(BaseModel):
     class DocStatus(models.TextChoices):
         LOST = "L", (_("Lost"))
         FOUND = "F", (_("Found"))
+        ISSUED = 'I',(_('Issued'))
         TAKEN = "T", (_("Taken"))
 
     doc_type = models.CharField(max_length=50)

@@ -15,3 +15,6 @@ urlpatterns += [
     path("api/docs/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# media
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
