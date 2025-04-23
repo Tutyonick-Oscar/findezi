@@ -4,4 +4,5 @@ from findezi.utils import app_path
 
 urlpatterns = [
     path("accounts/", include(f"{app_path('authentication')}.urls.api")),
+    path("", include(f"{app_path('document')}.urls")),
 ]

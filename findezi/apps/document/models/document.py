@@ -5,6 +5,14 @@ from django.utils.translation import gettext_lazy as _
 from findezi.apps.core.models import BaseModel
 
 
+class DocumentType(BaseModel):
+    
+    name = models.CharField(max_length=120,unique=True)
+    finding_cost = models.DecimalField(max_digits=16,decimal_places=3)
+    finding_commission = models.DecimalField(
+        max_digits=16, decimal_places=3, blank=True
+    )
+
 class Document(BaseModel):
 
     class DocStatus(models.TextChoices):
@@ -13,10 +21,14 @@ class Document(BaseModel):
         ISSUED = 'I',(_('Issued'))
         TAKEN = "T", (_("Taken"))
 
-    doc_type = models.CharField(max_length=50)
-    delivery_place = models.CharField(max_length=50)
-    delivery_date = models.DateField()
-    expiration_date = models.DateField()
+    doc_type = auto_prefetch.ForeignKey(
+        'document.DocumentType',
+        on_delete=models.PROTECT,
+        related_name='%(class)ss'
+    )
+    delivery_place = models.CharField(max_length=50,null=True,blank=True)
+    delivery_date = models.DateField(null=True,blank=True)
+    expiration_date = models.DateField(null=True,blank=True)
     doc_ref_number = models.CharField(max_length=50)
     doc_name = models.CharField(max_length=120)
     doc_last_name = models.CharField(max_length=120)
@@ -26,17 +38,33 @@ class Document(BaseModel):
     doc_image_recto = models.ImageField(upload_to="docs/lost", null=True, blank=True)
     doc_image_verso = models.ImageField(upload_to="docs/lost", null=True, blank=True)
     doc_status = models.CharField(max_length=1, choices=DocStatus.choices)
-    finding_commission = models.DecimalField(
-        max_digits=16, decimal_places=3, blank=True
-    )
-
+    
     class Meta(BaseModel.Meta):
         abstract = True
+        constraints = [
+            models.UniqueConstraint(
+                fields=['doc_type','doc_name','doc_last_name'],
+                condition=models.Q(deleted_at=None),
+                name='issued_%(class)ss',
+                violation_error_message='this document has already been issued'
+            ),
+            models.UniqueConstraint(
+                fields=('doc_ref_number',),
+                condition=models.Q(deleted_at=None),
+                name='unique_%(class)ss_ref_number',
+                violation_error_message='a document with this ref number has already been issued'
+            )
+        ]
+    
+    
+    def  __str__(self):
+        return f'{self.doc_name} : {self.doc_ref_number}'
+    
 
-
+    
 class LostDocument(Document):
-    last_remembering_place = models.CharField(max_length=120)
-    picker_reward = models.TextField()
+    last_remembering_place = models.CharField(max_length=120,null=True,blank=True)
+    picker_reward = models.TextField(null=True,blank=True)
     loser_email = models.EmailField(max_length=120)
     loser_number = models.IntegerField()
     loser = auto_prefetch.ForeignKey(
