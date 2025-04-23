@@ -37,7 +37,7 @@ class LostDocument(Document):
     last_remembering_place = models.CharField(max_length=120)
     picker_reward = models.TextField()
     loser_email = models.EmailField(max_length=120)
-    loser_number = models.IntegerField(max_length=14)
+    loser_number = models.IntegerField()
     loser = auto_prefetch.ForeignKey(
         "insurance.Loser",
         on_delete=models.SET_NULL,
@@ -50,4 +50,4 @@ class LostDocument(Document):
 class FoundDocument(Document):
     founded_at = models.CharField(max_length=120)
     picker_email = models.EmailField(max_length=120)
-    picker_number = models.IntegerField(max_length=14)
+    picker_number = models.IntegerField()
