@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('document', '0002_initial'),
+        ("document", "0002_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='founddocument',
-            name='picker_number',
+            model_name="founddocument",
+            name="picker_number",
             field=models.IntegerField(),
         ),
         migrations.AlterField(
-            model_name='lostdocument',
-            name='loser_number',
+            model_name="lostdocument",
+            name="loser_number",
             field=models.IntegerField(),
         ),
     ]

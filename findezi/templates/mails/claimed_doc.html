@@ -1,0 +1,66 @@
+{% load i18n static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Notification</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; color: #333;">
+    <table width="100%" cellpadding="0" cellspacing="0" style=" padding: 20px;">
+        <tr>
+            <td align="center">
+                <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden;">
+                    <!-- Header -->
+                    <tr>
+                        <td align="left" style="padding: 20px; background-color: transperant; color: #ffffff2f;">
+                            <a href="#" style="text-decoration: none; color: #ffffff; font-size: 24px; font-weight: bold;">
+                                <img src="" alt="Logo" style="height: 40px; display: block;">
+                            </a>
+                        </td>
+                    </tr>
+                    <!-- Body -->
+                    <tr>
+                        <td style="padding: 20px;">
+                            <h2 style="margin: 0; font-size: 24px; color: #333;">Hello dear {{doc_obj.claimed_by}},</h2>
+                            <p style="margin-top: 10px; font-size: 16px; line-height: 1.5;">
+                               {% trans "We are pleased to inform you that the document you claimed has been verified and is now ready for pickup." %}
+                            </p>
+                            <div style="margin-top: 20px; text-align: center;">
+                                <span style="display: inline-block; padding: 10px 20px; font-size: 16px; font-weight: bold; color: #ffffff; background-color: rgba(128, 128, 128, 0.867); border-radius: 4px;">
+                                    {% trans "Pickup Location" %}: <strong>Kamenge/Kavumu/5 /no 12</strong>
+                                </span>
+                                <span style="display: inline-block; padding: 10px 20px; font-size: 16px; font-weight: bold; color: #ffffff; background-color: rgba(128, 128, 128, 0.867); border-radius: 4px;">
+                                    {% trans "Available Hours" %}: <strong>8h30 - 16h00</strong>
+                                </span>
+
+                                <span style="display: inline-block; padding: 10px 20px; font-size: 16px; font-weight: bold; color: #ffffff; background-color: rgba(128, 128, 128, 0.867); border-radius: 4px;">
+                                    {% trans "Pickup Deadline" %}: <strong>dec 05-2025 </strong>
+                                </span>
+                            </div>
+                            <p style="margin-top: 20px; font-size: 14px; color: #555;">
+                                {% trans "Please bring a valid ID or proof of ownership when collecting the document." %}
+                            </p>
+                            <p style="margin-top: 20px; font-size: 14px; color: #555;">
+                                {% trans "If you have any questions, feel free to reply to this email or contact us at..." %}
+                            </p>
+                            <p style="margin-top: 10px; font-size: 14px; color: #555;">
+                                {% trans "happy to be part of us." %}
+                            </p>
+                        </td>
+                    </tr>
+                    <!-- Footer -->
+                    <tr>
+                        <td align="center" style="padding: 20px; background-color: #f4f4f4; font-size: 14px; color: #999;">
+                            <p style="margin: 0;">{% trans "Thanks" %},<br>
+                                <a href="https://findezi.bi" style="text-decoration: none; color: #2563eb;">{% trans "The Findezi team support!" %}</a>
+                            </p>
+                            <p style="margin-top: 10px; font-size: 12px;">© {% trans "2025 Findezi. All Rights Reserved." %}</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

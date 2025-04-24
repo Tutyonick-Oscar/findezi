@@ -12,56 +12,121 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('document', '0001_initial'),
+        ("document", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Loser',
+            name="Loser",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('deleted_at', models.DateTimeField(blank=True, default=None, null=True)),
-                ('insurance_start_date', models.DateField(auto_now_add=True)),
-                ('insurance_end_date', models.DateField(blank=True)),
-                ('created_by', auto_prefetch.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='loser', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "deleted_at",
+                    models.DateTimeField(blank=True, default=None, null=True),
+                ),
+                ("insurance_start_date", models.DateField(auto_now_add=True)),
+                ("insurance_end_date", models.DateField(blank=True)),
+                (
+                    "created_by",
+                    auto_prefetch.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="loser",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
-                'base_manager_name': 'prefetch_manager',
-                'default_manager_name': 'objects',
+                "abstract": False,
+                "base_manager_name": "prefetch_manager",
+                "default_manager_name": "objects",
             },
             managers=[
-                ('objects', django.db.models.manager.Manager()),
-                ('prefetch_manager', django.db.models.manager.Manager()),
+                ("objects", django.db.models.manager.Manager()),
+                ("prefetch_manager", django.db.models.manager.Manager()),
             ],
         ),
         migrations.CreateModel(
-            name='InsuranceCard',
+            name="InsuranceCard",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('deleted_at', models.DateTimeField(blank=True, default=None, null=True)),
-                ('issue_date', models.DateField()),
-                ('expiry_date', models.DateField(blank=True, null=True)),
-                ('card_unique_code', models.CharField(blank=True, max_length=50, unique=True)),
-                ('card_image_file', models.FileField(blank=True, null=True, upload_to='insurance_cards')),
-                ('card_qr_code_image', models.ImageField(blank=True, null=True, upload_to='insurance_cards_qr_codes')),
-                ('created_by', auto_prefetch.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='%(class)ss', to=settings.AUTH_USER_MODEL)),
-                ('issued_doc', auto_prefetch.OneToOneField(on_delete=django.db.models.deletion.PROTECT, related_name='insurance_card', to='document.lostdocument')),
-                ('loser', auto_prefetch.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='insurance_cards', to='insurance.loser')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "deleted_at",
+                    models.DateTimeField(blank=True, default=None, null=True),
+                ),
+                ("issue_date", models.DateField()),
+                ("expiry_date", models.DateField(blank=True, null=True)),
+                (
+                    "card_unique_code",
+                    models.CharField(blank=True, max_length=50, unique=True),
+                ),
+                (
+                    "card_image_file",
+                    models.FileField(
+                        blank=True, null=True, upload_to="insurance_cards"
+                    ),
+                ),
+                (
+                    "card_qr_code_image",
+                    models.ImageField(
+                        blank=True, null=True, upload_to="insurance_cards_qr_codes"
+                    ),
+                ),
+                (
+                    "created_by",
+                    auto_prefetch.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="%(class)ss",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "issued_doc",
+                    auto_prefetch.OneToOneField(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="insurance_card",
+                        to="document.lostdocument",
+                    ),
+                ),
+                (
+                    "loser",
+                    auto_prefetch.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="insurance_cards",
+                        to="insurance.loser",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
-                'base_manager_name': 'prefetch_manager',
-                'default_manager_name': 'objects',
+                "abstract": False,
+                "base_manager_name": "prefetch_manager",
+                "default_manager_name": "objects",
             },
             managers=[
-                ('objects', django.db.models.manager.Manager()),
-                ('prefetch_manager', django.db.models.manager.Manager()),
+                ("objects", django.db.models.manager.Manager()),
+                ("prefetch_manager", django.db.models.manager.Manager()),
             ],
         ),
     ]

@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('document', '0004_remove_founddocument_finding_commission_and_more'),
+        ("document", "0004_remove_founddocument_finding_commission_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='documenttype',
-            name='name',
+            model_name="documenttype",
+            name="name",
             field=models.CharField(max_length=120, unique=True),
         ),
     ]

@@ -1,0 +1,72 @@
+{% load i18n static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Notification</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; color: #333;">
+    <table width="100%" cellpadding="0" cellspacing="0" style=" padding: 20px;">
+        <tr>
+            <td align="center">
+                <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden;">
+                    <!-- Header -->
+                    <tr>
+                        <td align="left" style="padding: 20px; background-color: transperant; color: #ffffff2f;">
+                            <a href="#" style="text-decoration: none; color: #ffffff; font-size: 24px; font-weight: bold;">
+                                <img src="" alt="Logo" style="height: 40px; display: block;">
+                            </a>
+                        </td>
+                    </tr>
+                    <!-- Body -->
+                    <tr>
+                        <td style="padding: 20px;">
+                            <h2 style="margin: 0; font-size: 24px; color: #333;">Hello dear {{doc_obj.loser_email}},</h2>
+                            <p style="margin-top: 10px; font-size: 16px; line-height: 1.5;">
+                               {% trans "We have some great news — someone has reported finding the document you declared lost." %}
+                            </p>
+                            <p style="margin-top: 10px; font-size: 16px; line-height: 1.5;">
+                                {% trans "Our team is currently verifying the details and ensuring everything is in order. Once confirmed, you’ll receive another message with pickup instructions." %}
+                             </p>
+                            <div style="margin-top: 20px; text-align: center;">
+                                <span style="display: inline-block; padding: 10px 20px; font-size: 16px; font-weight: bold; color: #ffffff; background-color: rgba(128, 128, 128, 0.867); border-radius: 4px;">
+                                    {% trans "Document Reference number" %}: <strong>{{doc_obj.doc_ref_number}}</strong>
+                                </span>
+                                <span style="display: inline-block; padding: 10px 20px; font-size: 16px; font-weight: bold; color: #ffffff; background-color: rgba(128, 128, 128, 0.867); border-radius: 4px;">
+                                    {% trans "Document name" %}: <strong>{{doc_obj.doc_name}}</strong>
+                                </span>
+
+                                <span style="display: inline-block; padding: 10px 20px; font-size: 16px; font-weight: bold; color: #ffffff; background-color: rgba(128, 128, 128, 0.867); border-radius: 4px;">
+                                    {% trans "Document last name" %}: <strong> {{doc_obj.doc_last_name}} </strong>
+                                </span>
+                                <span style="display: inline-block; padding: 10px 20px; font-size: 16px; font-weight: bold; color: #ffffff; background-color: rgba(128, 128, 128, 0.867); border-radius: 4px;">
+                                    {% trans "Document Type" %}: <strong> {{doc_obj.doc_type.name}} </strong>
+                                </span>
+                            </div>
+                            <p style="margin-top: 20px; font-size: 14px; color: #555;">
+                                {% trans "We’ll get back to you with the location and time for pickup" %}
+                            </p>
+                            <p style="margin-top: 10px; font-size: 14px; color: #555;">
+                                {% trans "For any questions in the meantime, feel free to reply to this email." %}
+                            </p>
+                            <p style="margin-top: 10px; font-size: 14px; color: #555;">
+                                {% trans "happy to be part of us." %}
+                            </p>
+                        </td>
+                    </tr>
+                    <!-- Footer -->
+                    <tr>
+                        <td align="center" style="padding: 20px; background-color: #f4f4f4; font-size: 14px; color: #999;">
+                            <p style="margin: 0;">{% trans "Thanks" %},<br>
+                                <a href="https://findezi.bi" style="text-decoration: none; color: #2563eb;">{% trans "The Findezi team support!" %}</a>
+                            </p>
+                            <p style="margin-top: 10px; font-size: 12px;">© {% trans "2025 Findezi. All Rights Reserved." %}</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

@@ -10,14 +10,20 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('document', '0001_initial'),
-        ('insurance', '0001_initial'),
+        ("document", "0001_initial"),
+        ("insurance", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='lostdocument',
-            name='loser',
-            field=auto_prefetch.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='lost_documents', to='insurance.loser'),
+            model_name="lostdocument",
+            name="loser",
+            field=auto_prefetch.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="lost_documents",
+                to="insurance.loser",
+            ),
         ),
     ]

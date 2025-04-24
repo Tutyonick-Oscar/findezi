@@ -7,28 +7,38 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('document', '0006_founddocument_issued_founddocuments_and_more'),
-        ('insurance', '0001_initial'),
+        ("document", "0006_founddocument_issued_founddocuments_and_more"),
+        ("insurance", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='founddocument',
-            name='doc_ref_number',
+            model_name="founddocument",
+            name="doc_ref_number",
             field=models.CharField(max_length=50),
         ),
         migrations.AlterField(
-            model_name='lostdocument',
-            name='doc_ref_number',
+            model_name="lostdocument",
+            name="doc_ref_number",
             field=models.CharField(max_length=50),
         ),
         migrations.AddConstraint(
-            model_name='founddocument',
-            constraint=models.UniqueConstraint(condition=models.Q(('deleted_at', None)), fields=('doc_ref_number',), name='unique_founddocuments_ref_number', violation_error_message='a document with this ref number has already been issued'),
+            model_name="founddocument",
+            constraint=models.UniqueConstraint(
+                condition=models.Q(("deleted_at", None)),
+                fields=("doc_ref_number",),
+                name="unique_founddocuments_ref_number",
+                violation_error_message="a document with this ref number has already been issued",
+            ),
         ),
         migrations.AddConstraint(
-            model_name='lostdocument',
-            constraint=models.UniqueConstraint(condition=models.Q(('deleted_at', None)), fields=('doc_ref_number',), name='unique_lostdocuments_ref_number', violation_error_message='a document with this ref number has already been issued'),
+            model_name="lostdocument",
+            constraint=models.UniqueConstraint(
+                condition=models.Q(("deleted_at", None)),
+                fields=("doc_ref_number",),
+                name="unique_lostdocuments_ref_number",
+                violation_error_message="a document with this ref number has already been issued",
+            ),
         ),
     ]

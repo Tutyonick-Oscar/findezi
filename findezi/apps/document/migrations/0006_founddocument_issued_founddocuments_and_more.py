@@ -7,18 +7,28 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('document', '0005_alter_documenttype_name_and_more'),
-        ('insurance', '0001_initial'),
+        ("document", "0005_alter_documenttype_name_and_more"),
+        ("insurance", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AddConstraint(
-            model_name='founddocument',
-            constraint=models.UniqueConstraint(condition=models.Q(('deleted_at', None)), fields=('doc_type', 'doc_name', 'doc_last_name'), name='issued_founddocuments', violation_error_message='this document has already been issued'),
+            model_name="founddocument",
+            constraint=models.UniqueConstraint(
+                condition=models.Q(("deleted_at", None)),
+                fields=("doc_type", "doc_name", "doc_last_name"),
+                name="issued_founddocuments",
+                violation_error_message="this document has already been issued",
+            ),
         ),
         migrations.AddConstraint(
-            model_name='lostdocument',
-            constraint=models.UniqueConstraint(condition=models.Q(('deleted_at', None)), fields=('doc_type', 'doc_name', 'doc_last_name'), name='issued_lostdocuments', violation_error_message='this document has already been issued'),
+            model_name="lostdocument",
+            constraint=models.UniqueConstraint(
+                condition=models.Q(("deleted_at", None)),
+                fields=("doc_type", "doc_name", "doc_last_name"),
+                name="issued_lostdocuments",
+                violation_error_message="this document has already been issued",
+            ),
         ),
     ]

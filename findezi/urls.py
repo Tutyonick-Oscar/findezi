@@ -4,13 +4,12 @@ from django.contrib import admin
 from django.urls import include, path, re_path
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView
 
-
 admin.site.site_title = "FINDEZI"
 admin.site.site_header = "FINDEZI ADMIN"
 admin.site.index_title = "FINDEZI ADMIN"
 
 urlpatterns = [
-    path('admin/',admin.site.urls),
+    path("admin/", admin.site.urls),
     re_path("api/", include("findezi.routes.api")),
     # re_path("web/", include("findezi.routes.web")),
 ]
