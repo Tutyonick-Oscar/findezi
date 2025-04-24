@@ -19,7 +19,7 @@ from ..serializers import (
 )
 
 
-class DocumentTypeViewSet(GenericViewSet, ListModelMixin):
+class DocumentTypeViewSet(GenericViewSet, ListModelMixin,RetrieveModelMixin):
     serializer_class = DocTypeSerializer
     queryset = DocumentType.objects.all()
 

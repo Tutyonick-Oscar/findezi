@@ -45,6 +45,7 @@ class DocumentSerializer(serializers.Serializer):
             "doc_image_recto",
             "doc_image_verso",
             "doc_status",
+            "created_at",
         ]
 
     def get_doc_status(self, obj):
