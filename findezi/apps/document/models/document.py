@@ -104,7 +104,7 @@ class LostDocument(Document):
 
 
 class FoundDocument(Document):
-    founded_at = models.CharField(max_length=120)
+    founded_at = models.CharField(max_length=120,null=True,blank=True)
     picker_email = models.EmailField(max_length=120)
     picker_number = models.IntegerField()
     claimed_by = models.EmailField(max_length=120, null=True, blank=True)
