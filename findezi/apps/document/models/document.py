@@ -14,12 +14,55 @@ from ..managers.document import DocumentManager
 
 
 class DocumentType(BaseModel):
+    class LifeTimeUnitChoices(models.TextChoices):
+        DAYS = "D", (_("Days"))
+        WEEKS = "W", (_("Weeks"))
+        MONTHS = "M", (_("Months"))
+        YEARS = "Y", (_("Years"))
+
+    class PriceCurrencyChoices(models.TextChoices):
+        DOLLAR = (
+            "D",
+            "Dollar",
+        )
+        FRANC_BU = "B", "BIF"
+        FRANC_CONGOLAIS = "C", "CDF"
 
     name = models.CharField(max_length=120, unique=True)
     finding_cost = models.DecimalField(max_digits=16, decimal_places=3)
     finding_commission = models.DecimalField(
         max_digits=16, decimal_places=3, blank=True
     )
+    insurance_fees = models.DecimalField(max_digits=3, decimal_places=3)
+    lifetime = models.PositiveIntegerField()
+    lifetime_unit = models.CharField(
+        max_length=1,
+        choices=LifeTimeUnitChoices.choices,
+        default=LifeTimeUnitChoices.YEARS,
+    )
+    price = models.DecimalField(max_digits=16, decimal_places=3)
+    price_currency = models.CharField(
+        max_length=3, choices=PriceCurrencyChoices.choices
+    )
+
+    class Meta(BaseModel.Meta):
+        ordering = ("created_at",)
+
+    def __str__(self):
+        return f"{self.name}"
+
+    def days_lifetime(self):
+        if self.lifetime_unit == DocumentType.LifeTimeUnitChoices.DAYS:
+            return self.lifetime
+        elif self.lifetime_unit == DocumentType.LifeTimeUnitChoices.WEEKS:
+            return self.lifetime * 7
+        elif self.lifetime_unit == DocumentType.LifeTimeUnitChoices.MONTHS:
+            return self.lifetime * 30
+        elif self.lifetime_unit == DocumentType.LifeTimeUnitChoices.YEARS:
+            return self.lifetime * 365
+
+    def get_days_lifetime(self):
+        return self.lifetime * self.days_lifetime()
 
 
 class Document(BaseModel):
@@ -81,7 +124,7 @@ class LostDocument(Document):
     loser_email = models.EmailField(max_length=120)
     loser_number = models.IntegerField()
     loser = auto_prefetch.ForeignKey(
-        "insurance.Loser",
+        "insurance.LostDocumentInsurance",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -104,7 +147,7 @@ class LostDocument(Document):
 
 
 class FoundDocument(Document):
-    founded_at = models.CharField(max_length=120,null=True,blank=True)
+    founded_at = models.CharField(max_length=120, null=True, blank=True)
     picker_email = models.EmailField(max_length=120)
     picker_number = models.IntegerField()
     claimed_by = models.EmailField(max_length=120, null=True, blank=True)

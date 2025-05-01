@@ -1,5 +1,11 @@
 import auto_prefetch
+
+"""_summary_
+used for Handling case-insensitive usernames and email with PostgreSQL
+"""
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.validators import ASCIIUsernameValidator
+from django.contrib.postgres.fields import CICharField, CIEmailField
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -51,6 +57,11 @@ class User(AbstractUser, BaseModel):
                 condition=models.Q(deleted_at=None),
             )
         ]
+
+    def clean(self):
+        super().clean()
+        self.email = self.__class__.objects.normalize_email(self.email)
+        self.username = self.username.lower()
 
 
 class BlacklistedToken(models.Model):

@@ -42,3 +42,11 @@ class AccountManager(UserManager, BaseManager):
             raise ValueError("Superuser must have is_superuser=True.")
 
         return self._create_user(username, email, password, **extra_fields)
+
+    """_summary_
+    used for handling case-insensitive usernames without PostgreSQL
+    """
+
+    def get_by_natural_key(self, username):
+        case_insensitive_username_field = "{}__iexact".format(self.model.username)
+        return self.get(**{case_insensitive_username_field: username})
