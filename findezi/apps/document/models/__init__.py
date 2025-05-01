@@ -1,1 +1,1 @@
-from .document import FoundDocument, LostDocument
+from .document import FoundDocument, LostDocument,DocumentType

@@ -123,7 +123,7 @@ class LostDocument(Document):
     picker_reward = models.TextField(null=True, blank=True)
     loser_email = models.EmailField(max_length=120)
     loser_number = models.IntegerField()
-    loser = auto_prefetch.ForeignKey(
+    loser_insurance = auto_prefetch.ForeignKey(
         "insurance.LostDocumentInsurance",
         on_delete=models.SET_NULL,
         null=True,
