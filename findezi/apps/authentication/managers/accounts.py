@@ -47,6 +47,6 @@ class AccountManager(UserManager, BaseManager):
     used for handling case-insensitive usernames without PostgreSQL
     """
 
-    def get_by_natural_key(self, username):
-        case_insensitive_username_field = "{}__iexact".format(self.model.username)
-        return self.get(**{case_insensitive_username_field: username})
+    # def get_by_natural_key(self, username):
+    #     case_insensitive_username_field = "{}__iexact".format(self.model.username)
+    #     return self.get(**{case_insensitive_username_field: username})

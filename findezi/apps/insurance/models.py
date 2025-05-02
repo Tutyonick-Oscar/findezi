@@ -29,10 +29,10 @@ class LostDocumentInsurance(BaseModel):
 
 
 class InsuranceCard(BaseModel):
-    lost_doc_insurance = auto_prefetch.ForeignKey(
+    lost_doc_insurance = auto_prefetch.OneToOneField(
         "LostDocumentInsurance",
         on_delete=models.CASCADE,
-        related_name="insurance_cards",
+        related_name="card",
     )
     issued_doc = auto_prefetch.OneToOneField(
         "document.LostDocument", on_delete=models.PROTECT, related_name="insurance_card"
@@ -156,7 +156,7 @@ class InsuranceRequest(BaseModel):
     # admin function
     def cancel_request(self, admin):
         if self.is_cancelable():
-            if isinstance(User, admin) and admin.is_admin:
+            if isinstance(User, admin) and admin.is_superuser:
                 self.canceled_by = admin
                 self.canceled_at = timezone.now()
                 self.request_status = InsuranceRequest.RequestStatus.CANCELLED
@@ -172,7 +172,7 @@ class InsuranceRequest(BaseModel):
     def validate_request(self, admin):
         if not self.can_be_validated():
             return False, _("This object seems already validated or rejected.")
-        if isinstance(User, admin) and admin.is_admin:
+        if isinstance(User, admin) and admin.is_superuser:
             self.validated_by = admin
             self.valided_at = timezone.now()
             self.request_status = InsuranceRequest.RequestStatus.VALIDATED
@@ -187,7 +187,7 @@ class InsuranceRequest(BaseModel):
             return False, _(
                 "This object seems already validated,authorized or rejected."
             )
-        if isinstance(User, admin) and admin.is_admin:
+        if isinstance(User, admin) and admin.is_superuser:
             self.rejected_by = admin
             self.rejected_at = timezone.now()
             self.request_status = InsuranceRequest.RequestStatus.REJECTED
@@ -202,8 +202,10 @@ class InsuranceRequest(BaseModel):
         if not self.is_authorizable():
             return False, _("The object must be validated first.")
 
-        if isinstance(User, admin) and admin.is_admin:
-            insurance = self.__class__.objects.authorize_request_(request=self)
+        if isinstance(User, admin) and admin.is_superuser:
+            insurance = self.__class__.objects.authorize_request_(
+                request=self, admin=admin
+            )
             self.authorized_by = admin
             self.authorized_at = timezone.now()
             self.request_status = InsuranceRequest.RequestStatus.AUTHORIZED

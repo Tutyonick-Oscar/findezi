@@ -1,7 +1,12 @@
+from decimal import Decimal
+
 import auto_prefetch
+from django.apps import apps
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from findezi.apps.config.utilities import currency_exchange
 from findezi.apps.core.models import BaseModel
 from findezi.apps.core.utilities.mails import (
     send_claimed_doc_info_mail,
@@ -14,26 +19,19 @@ from ..managers.document import DocumentManager
 
 
 class DocumentType(BaseModel):
+
     class LifeTimeUnitChoices(models.TextChoices):
         DAYS = "D", (_("Days"))
         WEEKS = "W", (_("Weeks"))
         MONTHS = "M", (_("Months"))
         YEARS = "Y", (_("Years"))
 
-    class PriceCurrencyChoices(models.TextChoices):
-        DOLLAR = (
-            "D",
-            "Dollar",
-        )
-        FRANC_BU = "B", "BIF"
-        FRANC_CONGOLAIS = "C", "CDF"
-
     name = models.CharField(max_length=120, unique=True)
     finding_cost = models.DecimalField(max_digits=16, decimal_places=3)
     finding_commission = models.DecimalField(
         max_digits=16, decimal_places=3, blank=True
     )
-    insurance_fees = models.DecimalField(max_digits=3, decimal_places=3)
+    # insurance_fees = models.DecimalField(max_digits=3, decimal_places=3)
     lifetime = models.PositiveIntegerField()
     lifetime_unit = models.CharField(
         max_length=1,
@@ -41,8 +39,8 @@ class DocumentType(BaseModel):
         default=LifeTimeUnitChoices.YEARS,
     )
     price = models.DecimalField(max_digits=16, decimal_places=3)
-    price_currency = models.CharField(
-        max_length=3, choices=PriceCurrencyChoices.choices
+    price_currency = auto_prefetch.ForeignKey(
+        "config.Currency", on_delete=models.PROTECT, related_name="doc_types"
     )
 
     class Meta(BaseModel.Meta):
@@ -63,6 +61,32 @@ class DocumentType(BaseModel):
 
     def get_days_lifetime(self):
         return self.lifetime * self.days_lifetime()
+
+    def cost_per_day(self):
+        return self.price / self.get_days_lifetime()
+
+    def get_insurance_fees(self, delay=30):
+
+        Currency = apps.get_model("config", "Currency")
+
+        try:
+            delay_ = int(delay)
+        except Exception:
+            raise ValidationError(_("delay must be a valide integer"))
+
+        fourthy_percent = (40 * self.cost_per_day()) / 100
+        cost = fourthy_percent + self.cost_per_day()
+        delay_based_cost = cost * delay
+
+        if self.price_currency.code != "BIF":
+            new_delay_based_cost = currency_exchange(
+                from_currency=self.price_currency,
+                to_currency=Currency.objects.get(code="BIF"),
+                amount=delay_based_cost,
+            )
+            return new_delay_based_cost
+
+        return delay_based_cost
 
 
 class Document(BaseModel):
@@ -123,13 +147,6 @@ class LostDocument(Document):
     picker_reward = models.TextField(null=True, blank=True)
     loser_email = models.EmailField(max_length=120)
     loser_number = models.IntegerField()
-    loser_insurance = auto_prefetch.ForeignKey(
-        "insurance.LostDocumentInsurance",
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="lost_documents",
-    )
     found_by = models.EmailField(max_length=120, null=True, blank=True)
 
     def report_found(self, email):

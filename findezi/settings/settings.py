@@ -32,6 +32,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     app_path("authentication"),
     app_path("document"),
+    app_path("config"),
     app_path("insurance"),
 ]
 

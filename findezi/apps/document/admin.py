@@ -28,7 +28,7 @@ class DocumentTypeAdmin(admin.ModelAdmin):
         "finding_cost",
         "finding_commission",
         "created_by__username",
-        "insurance_fees",
+        # "insurance_fees",
         "lifetime",
         "lifetime_unit",
         "price",

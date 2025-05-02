@@ -51,6 +51,9 @@ class BaseModel(auto_prefetch.Model):
         self.save()
         return self
 
+    def hard_delete(self, **kwargs):
+        return super().delete()
+
     def save(self, force=False, *args, **kwargs):
         if force:
             return super().save(*args, **kwargs)
